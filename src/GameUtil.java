@@ -1,4 +1,5 @@
 import java.awt.*;
+import javax.swing.*;
 
 public class GameUtil {
     static int MAP_W = 11;
@@ -16,22 +17,26 @@ public class GameUtil {
     static boolean RIGHT = false;
     static int status = 0;
     static boolean firstClick = true;
-    static Image maozhua = Toolkit.getDefaultToolkit().getImage("pic/maozhua.png");
-    static Image coin = Toolkit.getDefaultToolkit().getImage("pic/coin.png");
-    static Image mouse = Toolkit.getDefaultToolkit().getImage("pic/mouse.png");
-    static Image top = Toolkit.getDefaultToolkit().getImage("pic/yellow.png");
-    static Image zero = Toolkit.getDefaultToolkit().getImage("pic/cheese.png");
-    static Image one = Toolkit.getDefaultToolkit().getImage("pic/1.png");
-    static Image two = Toolkit.getDefaultToolkit().getImage("pic/2.png");
-    static Image three = Toolkit.getDefaultToolkit().getImage("pic/3.png");
-    static Image four = Toolkit.getDefaultToolkit().getImage("pic/4.png");
-    static Image five = Toolkit.getDefaultToolkit().getImage("pic/5.png");
-    static Image six = Toolkit.getDefaultToolkit().getImage("pic/6.png");
-    static Image seven = Toolkit.getDefaultToolkit().getImage("pic/7.png");
-    static Image eight = Toolkit.getDefaultToolkit().getImage("pic/8.png");
-    static Image Continue = Toolkit.getDefaultToolkit().getImage("pic/cheese.png");
-    static Image Success = Toolkit.getDefaultToolkit().getImage("pic/mouse.png");
-    static Image False = Toolkit.getDefaultToolkit().getImage("pic/cat.png");
+    static Image maozhua = loadImage("pic/maozhua.png");
+    static Image coin = loadImage("pic/coin.png");
+    static Image mouse = loadImage("pic/mouse.png");
+    static Image top = loadImage("pic/yellow.png");
+    static Image zero = loadImage("pic/cheese.png");
+    static Image one = loadImage("pic/1.png");
+    static Image two = loadImage("pic/2.png");
+    static Image three = loadImage("pic/3.png");
+    static Image four = loadImage("pic/4.png");
+    static Image five = loadImage("pic/5.png");
+    static Image six = loadImage("pic/6.png");
+    static Image seven = loadImage("pic/7.png");
+    static Image eight = loadImage("pic/8.png");
+    static Image Continue = loadImage("pic/cheese.png");
+    static Image Success = loadImage("pic/mouse.png");
+    static Image False = loadImage("pic/cat.png");
+
+    static Image loadImage(String path) {
+        return new ImageIcon(path).getImage();
+    }
 
     static void resetInputState() {
         MOUSE_X = 0;

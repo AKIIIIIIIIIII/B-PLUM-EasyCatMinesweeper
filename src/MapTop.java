@@ -1,8 +1,8 @@
 import java.awt.*;
 
 public class MapTop {
-    static int temp_x,temp_y;
     MapBottom mapBottom = new MapBottom();
+
     void regame(){
         for (int i = 0; i < GameUtil.TOP_BOTTOM.length ; i++) {
             for (int j = 0; j < GameUtil.TOP_BOTTOM[i].length ; j++) {
@@ -11,37 +11,50 @@ public class MapTop {
         }
         GameUtil.resetGameState();
     }
-    void logic(){
-        temp_x = 0;
-        temp_y = 0;
-        if (GameUtil.MOUSE_X >GameUtil.OFFSET && GameUtil.MOUSE_Y > 3*GameUtil.OFFSET) {
-            temp_x = (GameUtil.MOUSE_X - GameUtil.OFFSET)/GameUtil.SQUARE_LENGTH + 1;
-            temp_y = (GameUtil.MOUSE_Y - GameUtil.OFFSET * 3)/GameUtil.SQUARE_LENGTH + 1;
+
+    boolean isRestartButton(int mouseX, int mouseY) {
+        return mouseX >= (GameUtil.OFFSET * 2 + GameUtil.SQUARE_LENGTH * (GameUtil.MAP_W - 1)) / 2
+                && mouseX <= (GameUtil.OFFSET * 2 + GameUtil.SQUARE_LENGTH * (GameUtil.MAP_W - 1)) / 2 + GameUtil.SQUARE_LENGTH
+                && mouseY >= GameUtil.OFFSET
+                && mouseY <= GameUtil.OFFSET + GameUtil.SQUARE_LENGTH;
+    }
+
+    void handleClick(int mouseX, int mouseY, boolean isLeftButton) {
+        int gridX = 0;
+        int gridY = 0;
+        if (mouseX > GameUtil.OFFSET && mouseY > 3 * GameUtil.OFFSET) {
+            gridX = (mouseX - GameUtil.OFFSET) / GameUtil.SQUARE_LENGTH + 1;
+            gridY = (mouseY - GameUtil.OFFSET * 3) / GameUtil.SQUARE_LENGTH + 1;
         }
-        if (temp_x >= 1 && temp_x <= GameUtil.MAP_W && temp_y >= 1 && temp_y <= GameUtil.MAP_H) {
-            if (GameUtil.LEFT) {
-                if (GameUtil.TOP_BOTTOM[temp_x][temp_y] == 0) {
-                    if (GameUtil.firstClick) {
-                        mapBottom.createMap(temp_x, temp_y);
-                    }
-                    GameUtil.TOP_BOTTOM[temp_x][temp_y] = -1;
-                    OpenSpace(temp_x,temp_y);
+        if (gridX < 1 || gridX > GameUtil.MAP_W || gridY < 1 || gridY > GameUtil.MAP_H) {
+            return;
+        }
+
+        if (isLeftButton) {
+            if (GameUtil.TOP_BOTTOM[gridX][gridY] == 0) {
+                if (GameUtil.firstClick) {
+                    mapBottom.createMap(gridX, gridY);
                 }
-                GameUtil.LEFT = false;
-            }else if (GameUtil.RIGHT) {
-                if (GameUtil.TOP_BOTTOM[temp_x][temp_y] == 0) {
-                    GameUtil.TOP_BOTTOM[temp_x][temp_y] = 1;
-                }else if (GameUtil.TOP_BOTTOM[temp_x][temp_y] == 1) {
-                    GameUtil.TOP_BOTTOM[temp_x][temp_y] = 0;
-                }else if (GameUtil.TOP_BOTTOM[temp_x][temp_y] == -1){
-                    OpenNum(temp_x,temp_y);
-                }
-                GameUtil.RIGHT = false;
+                GameUtil.TOP_BOTTOM[gridX][gridY] = -1;
+                OpenSpace(gridX, gridY);
+            }
+        } else {
+            if (GameUtil.firstClick) {
+                return;
+            }
+            if (GameUtil.TOP_BOTTOM[gridX][gridY] == 0) {
+                GameUtil.TOP_BOTTOM[gridX][gridY] = 1;
+            } else if (GameUtil.TOP_BOTTOM[gridX][gridY] == 1) {
+                GameUtil.TOP_BOTTOM[gridX][gridY] = 0;
+            } else if (GameUtil.TOP_BOTTOM[gridX][gridY] == -1) {
+                OpenNum(gridX, gridY);
             }
         }
-    bool();
-    Success();
+
+        bool();
+        Success();
     }
+
     void OpenSpace(int x, int y){
         if (GameUtil.MAP_BOTTOM[x][y]==0) {//周围没有雷
             for (int i = x-1; i <= x+1; i++) {
@@ -130,7 +143,6 @@ public class MapTop {
         return false;
     }
     void paintSelf(Graphics g){
-        logic();
         for (int i = 1; i <= GameUtil.MAP_W; i++) {
             for (int j = 1; j <= GameUtil.MAP_H; j++) {
                 if (GameUtil.TOP_BOTTOM[i][j] == 0) {
