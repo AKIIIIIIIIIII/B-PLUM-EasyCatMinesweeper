@@ -11,7 +11,7 @@ public class Minesweeper_Win extends JFrame {
     MapBottom mapBottom = new MapBottom();
     MapTop mapTop = new MapTop();
     int w = GameUtil.MAP_W * GameUtil.SQUARE_LENGTH + 2 * GameUtil.OFFSET;
-    int h = GameUtil.MAP_H * GameUtil.SQUARE_LENGTH + 4 * GameUtil.OFFSET;
+    int h = GameUtil.MAP_H * GameUtil.SQUARE_LENGTH + 5 * GameUtil.OFFSET;
     JPanel gamePanel = new JPanel() {
         @Override
         protected void paintComponent(Graphics g) {
@@ -28,6 +28,7 @@ public class Minesweeper_Win extends JFrame {
             @Override
             public void mousePressed(MouseEvent e) {
                 super.mousePressed(e);
+                GameUtil.updatePress(e.getX(), e.getY());
                 switch (GameUtil.status) {
                     case 0:
                         if (SwingUtilities.isLeftMouseButton(e) && mapTop.isRestartButton(e.getX(), e.getY())) {
@@ -51,7 +52,42 @@ public class Minesweeper_Win extends JFrame {
                     default:
                 }
             }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                super.mouseReleased(e);
+                GameUtil.clearPress();
+                gamePanel.repaint();
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                super.mouseExited(e);
+                GameUtil.clearHover();
+                GameUtil.clearPress();
+                gamePanel.repaint();
+            }
         });
+        gamePanel.addMouseMotionListener(new MouseAdapter() {
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                super.mouseMoved(e);
+                GameUtil.updateHover(e.getX(), e.getY());
+                gamePanel.repaint();
+            }
+
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                super.mouseDragged(e);
+                GameUtil.updateHover(e.getX(), e.getY());
+                gamePanel.repaint();
+            }
+        });
+        new Timer(1000, e -> {
+            if (!GameUtil.firstClick && GameUtil.status == 0) {
+                gamePanel.repaint();
+            }
+        }).start();
         this.setContentPane(gamePanel);
         this.pack();
         this.setLocationRelativeTo(null);
