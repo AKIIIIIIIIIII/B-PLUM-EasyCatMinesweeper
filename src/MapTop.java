@@ -13,10 +13,10 @@ public class MapTop {
     }
 
     boolean isRestartButton(int mouseX, int mouseY) {
-        return mouseX >= (GameUtil.OFFSET * 2 + GameUtil.SQUARE_LENGTH * (GameUtil.MAP_W - 1)) / 2
-                && mouseX <= (GameUtil.OFFSET * 2 + GameUtil.SQUARE_LENGTH * (GameUtil.MAP_W - 1)) / 2 + GameUtil.SQUARE_LENGTH
-                && mouseY >= GameUtil.OFFSET
-                && mouseY <= GameUtil.OFFSET + GameUtil.SQUARE_LENGTH;
+        return mouseX >= GameUtil.restartButtonX()
+                && mouseX <= GameUtil.restartButtonX() + GameUtil.SQUARE_LENGTH
+                && mouseY >= GameUtil.restartButtonY()
+                && mouseY <= GameUtil.restartButtonY() + GameUtil.SQUARE_LENGTH;
     }
 
     void handleClick(int mouseX, int mouseY, boolean isLeftButton) {
@@ -143,60 +143,61 @@ public class MapTop {
         return false;
     }
     void paintSelf(Graphics g){
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         for (int i = 1; i <= GameUtil.MAP_W; i++) {
             for (int j = 1; j <= GameUtil.MAP_H; j++) {
                 if (GameUtil.TOP_BOTTOM[i][j] == 0) {
-                    g.drawImage(GameUtil.top,
-                            GameUtil.OFFSET + (i-1) * GameUtil.SQUARE_LENGTH + 1,
-                            3 * GameUtil.OFFSET + GameUtil.SQUARE_LENGTH * (j-1) + 1,
-                            GameUtil.SQUARE_LENGTH - 2,
-                            GameUtil.SQUARE_LENGTH - 2,
-                            null);
+                    drawRoundedTile(g2, GameUtil.top, i, j);
                 } else if (GameUtil.TOP_BOTTOM[i][j] == 1) {
-                    g.drawImage(GameUtil.coin,
-                            GameUtil.OFFSET + (i-1) * GameUtil.SQUARE_LENGTH + 1,
-                            3 * GameUtil.OFFSET + GameUtil.SQUARE_LENGTH * (j-1) + 1,
-                            GameUtil.SQUARE_LENGTH - 2,
-                            GameUtil.SQUARE_LENGTH - 2,
-                            null);
+                    drawRoundedTile(g2, GameUtil.coin, i, j);
                 }else if (GameUtil.TOP_BOTTOM[i][j] == 2) {
-                    g.drawImage(GameUtil.mouse,
-                            GameUtil.OFFSET + (i-1) * GameUtil.SQUARE_LENGTH + 1,
-                            3 * GameUtil.OFFSET + GameUtil.SQUARE_LENGTH * (j-1) + 1,
-                            GameUtil.SQUARE_LENGTH - 2,
-                            GameUtil.SQUARE_LENGTH - 2,
-                            null);
+                    drawRoundedTile(g2, GameUtil.mouse, i, j);
                 }
             }
         }
+        drawRestartButton(g2);
+        g2.dispose();
+    }
+
+    void drawRoundedTile(Graphics2D g2, Image image, int x, int y) {
+        int tileX = GameUtil.tileX(x);
+        int tileY = GameUtil.tileY(y);
+        int tileSize = GameUtil.tileSize();
+        Shape oldClip = g2.getClip();
+        g2.setClip(new java.awt.geom.RoundRectangle2D.Double(
+                tileX, tileY, tileSize, tileSize, GameUtil.TILE_RADIUS, GameUtil.TILE_RADIUS));
+        g2.drawImage(image, tileX, tileY, tileSize, tileSize, null);
+        g2.setClip(oldClip);
+    }
+
+    void drawRestartButton(Graphics2D g2) {
+        int buttonX = GameUtil.restartButtonX();
+        int buttonY = GameUtil.restartButtonY();
+        int buttonSize = GameUtil.tileSize();
+        g2.setColor(GameUtil.COLOR_SHADOW);
+        g2.fillRoundRect(buttonX + 2, buttonY + 4, buttonSize, buttonSize, GameUtil.TILE_RADIUS, GameUtil.TILE_RADIUS);
+        g2.setColor(GameUtil.COLOR_PANEL);
+        g2.fillRoundRect(buttonX, buttonY, buttonSize, buttonSize, GameUtil.TILE_RADIUS, GameUtil.TILE_RADIUS);
+        g2.setColor(GameUtil.COLOR_PANEL_BORDER);
+        g2.drawRoundRect(buttonX, buttonY, buttonSize, buttonSize, GameUtil.TILE_RADIUS, GameUtil.TILE_RADIUS);
+
+        Image buttonImage = GameUtil.Continue;
         switch (GameUtil.status){
-            case 0:
-                g.drawImage(GameUtil.Continue,
-                        (GameUtil.OFFSET * 2 + GameUtil.SQUARE_LENGTH*(GameUtil.MAP_W-1))/2,
-                        GameUtil.OFFSET,
-                        GameUtil.SQUARE_LENGTH,
-                        GameUtil.SQUARE_LENGTH,
-                        null);
-                break;
             case 1:
-                g.drawImage(GameUtil.Success,
-                        (GameUtil.OFFSET * 2 + GameUtil.SQUARE_LENGTH*(GameUtil.MAP_W-1))/2,
-                        GameUtil.OFFSET,
-                        GameUtil.SQUARE_LENGTH,
-                        GameUtil.SQUARE_LENGTH,
-                        null);
+                buttonImage = GameUtil.Success;
                 break;
             case 2:
-                g.drawImage(GameUtil.False,
-                        (GameUtil.OFFSET * 2 + GameUtil.SQUARE_LENGTH*(GameUtil.MAP_W-1))/2,
-                        GameUtil.OFFSET,
-                        GameUtil.SQUARE_LENGTH,
-                        GameUtil.SQUARE_LENGTH,
-                        null);
+                buttonImage = GameUtil.False;
                 break;
-                default:
-
+            default:
+                break;
         }
+        Shape oldClip = g2.getClip();
+        g2.setClip(new java.awt.geom.RoundRectangle2D.Double(
+                buttonX, buttonY, buttonSize, buttonSize, GameUtil.TILE_RADIUS, GameUtil.TILE_RADIUS));
+        g2.drawImage(buttonImage, buttonX, buttonY, buttonSize, buttonSize, null);
+        g2.setClip(oldClip);
     }
 
 }

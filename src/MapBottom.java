@@ -25,94 +25,111 @@ public class MapBottom {
         GameUtil.firstClick = false;
     }
     void paintSelf(Graphics g){
-        g.setColor(Color.ORANGE);
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        Rectangle clip = g2.getClipBounds();
+        g2.setColor(GameUtil.COLOR_BG);
+        if (clip == null) {
+            g2.fillRect(0, 0,
+                    GameUtil.MAP_W * GameUtil.SQUARE_LENGTH + 2 * GameUtil.OFFSET,
+                    GameUtil.MAP_H * GameUtil.SQUARE_LENGTH + 4 * GameUtil.OFFSET);
+        } else {
+            g2.fillRect(clip.x, clip.y, clip.width, clip.height);
+        }
+
+        int boardX = GameUtil.boardX();
+        int boardY = GameUtil.boardY();
+        int boardW = GameUtil.boardWidth();
+        int boardH = GameUtil.boardHeight();
+
+        g2.setColor(GameUtil.COLOR_SHADOW);
+        g2.fillRoundRect(
+                boardX - GameUtil.PANEL_PADDING,
+                boardY - GameUtil.PANEL_PADDING + 3,
+                boardW + 2 * GameUtil.PANEL_PADDING,
+                boardH + 2 * GameUtil.PANEL_PADDING,
+                GameUtil.PANEL_RADIUS,
+                GameUtil.PANEL_RADIUS);
+        g2.setColor(GameUtil.COLOR_PANEL);
+        g2.fillRoundRect(
+                boardX - GameUtil.PANEL_PADDING,
+                boardY - GameUtil.PANEL_PADDING,
+                boardW + 2 * GameUtil.PANEL_PADDING,
+                boardH + 2 * GameUtil.PANEL_PADDING,
+                GameUtil.PANEL_RADIUS,
+                GameUtil.PANEL_RADIUS);
+        g2.setColor(GameUtil.COLOR_PANEL_BORDER);
+        g2.drawRoundRect(
+                boardX - GameUtil.PANEL_PADDING,
+                boardY - GameUtil.PANEL_PADDING,
+                boardW + 2 * GameUtil.PANEL_PADDING,
+                boardH + 2 * GameUtil.PANEL_PADDING,
+                GameUtil.PANEL_RADIUS,
+                GameUtil.PANEL_RADIUS);
+
+        g2.setColor(GameUtil.COLOR_GRID);
+        g2.setStroke(new BasicStroke(1.0f));
         for (int i = 0; i <= GameUtil.MAP_W; i++) {
-            g.drawLine(
-                    GameUtil.OFFSET+ i * GameUtil.SQUARE_LENGTH,
-                    3*GameUtil.OFFSET,
-                    GameUtil.OFFSET+ i* GameUtil.SQUARE_LENGTH,
-                    3*GameUtil.OFFSET+GameUtil.MAP_H*GameUtil.SQUARE_LENGTH);
+            g2.drawLine(
+                    boardX + i * GameUtil.SQUARE_LENGTH,
+                    boardY,
+                    boardX + i * GameUtil.SQUARE_LENGTH,
+                    boardY + boardH);
         }
         for (int j = 0; j <= GameUtil.MAP_H; j++) {
-            g.drawLine(GameUtil.OFFSET,
-                    3 * GameUtil.OFFSET + GameUtil.SQUARE_LENGTH*j,
-                    GameUtil.OFFSET+GameUtil.MAP_W*GameUtil.SQUARE_LENGTH,
-                    3*GameUtil.OFFSET + j * GameUtil.SQUARE_LENGTH);
+            g2.drawLine(boardX,
+                    boardY + GameUtil.SQUARE_LENGTH*j,
+                    boardX + boardW,
+                    boardY + j * GameUtil.SQUARE_LENGTH);
         }
+
         for (int i = 1; i <= GameUtil.MAP_W; i++) {
             for (int j = 1; j <= GameUtil.MAP_H; j++) {
-                if (GameUtil.MAP_BOTTOM[i][j] == -1) {
-                    g.drawImage(GameUtil.maozhua,
-                            GameUtil.OFFSET + (i-1) * GameUtil.SQUARE_LENGTH + 1,
-                            3 * GameUtil.OFFSET + GameUtil.SQUARE_LENGTH * (j-1) + 1,
-                            GameUtil.SQUARE_LENGTH - 2,
-                            GameUtil.SQUARE_LENGTH - 2,
-                            null);
-                } else if (GameUtil.MAP_BOTTOM[i][j] == 1) {
-                    g.drawImage(GameUtil.one,
-                            GameUtil.OFFSET + (i-1) * GameUtil.SQUARE_LENGTH + 1,
-                            3 * GameUtil.OFFSET + GameUtil.SQUARE_LENGTH * (j-1) + 1,
-                            GameUtil.SQUARE_LENGTH - 2,
-                            GameUtil.SQUARE_LENGTH - 2,
-                            null);
-                }else if (GameUtil.MAP_BOTTOM[i][j] == 0) {
-                    g.drawImage(GameUtil.zero,
-                            GameUtil.OFFSET + (i-1) * GameUtil.SQUARE_LENGTH + 1,
-                            3 * GameUtil.OFFSET + GameUtil.SQUARE_LENGTH * (j-1) + 1,
-                            GameUtil.SQUARE_LENGTH - 2,
-                            GameUtil.SQUARE_LENGTH - 2,
-                            null);
-                }else if (GameUtil.MAP_BOTTOM[i][j] == 2) {
-                    g.drawImage(GameUtil.two,
-                            GameUtil.OFFSET + (i-1) * GameUtil.SQUARE_LENGTH + 1,
-                            3 * GameUtil.OFFSET + GameUtil.SQUARE_LENGTH * (j-1) + 1,
-                            GameUtil.SQUARE_LENGTH - 2,
-                            GameUtil.SQUARE_LENGTH - 2,
-                            null);
-                }else if (GameUtil.MAP_BOTTOM[i][j] == 3) {
-                    g.drawImage(GameUtil.three,
-                            GameUtil.OFFSET + (i-1) * GameUtil.SQUARE_LENGTH + 1,
-                            3 * GameUtil.OFFSET + GameUtil.SQUARE_LENGTH * (j-1) + 1,
-                            GameUtil.SQUARE_LENGTH - 2,
-                            GameUtil.SQUARE_LENGTH - 2,
-                            null);
-                }else if (GameUtil.MAP_BOTTOM[i][j] == 4) {
-                    g.drawImage(GameUtil.four,
-                            GameUtil.OFFSET + (i-1) * GameUtil.SQUARE_LENGTH + 1,
-                            3 * GameUtil.OFFSET + GameUtil.SQUARE_LENGTH * (j-1) + 1,
-                            GameUtil.SQUARE_LENGTH - 2,
-                            GameUtil.SQUARE_LENGTH - 2,
-                            null);
-                }else if (GameUtil.MAP_BOTTOM[i][j] == 5) {
-                    g.drawImage(GameUtil.five,
-                            GameUtil.OFFSET + (i-1) * GameUtil.SQUARE_LENGTH + 1,
-                            3 * GameUtil.OFFSET + GameUtil.SQUARE_LENGTH * (j-1) + 1,
-                            GameUtil.SQUARE_LENGTH - 2,
-                            GameUtil.SQUARE_LENGTH - 2,
-                            null);
-                }else if (GameUtil.MAP_BOTTOM[i][j] == 6) {
-                    g.drawImage(GameUtil.six,
-                            GameUtil.OFFSET + (i-1) * GameUtil.SQUARE_LENGTH + 1,
-                            3 * GameUtil.OFFSET + GameUtil.SQUARE_LENGTH * (j-1) + 1,
-                            GameUtil.SQUARE_LENGTH - 2,
-                            GameUtil.SQUARE_LENGTH - 2,
-                            null);
-                }else if (GameUtil.MAP_BOTTOM[i][j] == 7) {
-                    g.drawImage(GameUtil.seven,
-                            GameUtil.OFFSET + (i-1) * GameUtil.SQUARE_LENGTH + 1,
-                            3 * GameUtil.OFFSET + GameUtil.SQUARE_LENGTH * (j-1) + 1,
-                            GameUtil.SQUARE_LENGTH - 2,
-                            GameUtil.SQUARE_LENGTH - 2,
-                            null);
-                }else if (GameUtil.MAP_BOTTOM[i][j] == 8) {
-                    g.drawImage(GameUtil.eight,
-                            GameUtil.OFFSET + (i-1) * GameUtil.SQUARE_LENGTH + 1,
-                            3 * GameUtil.OFFSET + GameUtil.SQUARE_LENGTH * (j-1) + 1,
-                            GameUtil.SQUARE_LENGTH - 2,
-                            GameUtil.SQUARE_LENGTH - 2,
-                            null);
-                }
+                drawRoundedTile(g2, getCellImage(GameUtil.MAP_BOTTOM[i][j]), i, j);
             }
         }
+        g2.dispose();
+    }
+
+    Image getCellImage(int value) {
+        switch (value) {
+            case -1:
+                return GameUtil.maozhua;
+            case 0:
+                return GameUtil.zero;
+            case 1:
+                return GameUtil.one;
+            case 2:
+                return GameUtil.two;
+            case 3:
+                return GameUtil.three;
+            case 4:
+                return GameUtil.four;
+            case 5:
+                return GameUtil.five;
+            case 6:
+                return GameUtil.six;
+            case 7:
+                return GameUtil.seven;
+            case 8:
+                return GameUtil.eight;
+            default:
+                return null;
+        }
+    }
+
+    void drawRoundedTile(Graphics2D g2, Image image, int x, int y) {
+        if (image == null) {
+            return;
+        }
+        int tileX = GameUtil.tileX(x);
+        int tileY = GameUtil.tileY(y);
+        int tileSize = GameUtil.tileSize();
+        Shape oldClip = g2.getClip();
+        g2.setClip(new java.awt.geom.RoundRectangle2D.Double(
+                tileX, tileY, tileSize, tileSize, GameUtil.TILE_RADIUS, GameUtil.TILE_RADIUS));
+        g2.drawImage(image, tileX, tileY, tileSize, tileSize, null);
+        g2.setClip(oldClip);
     }
 }
