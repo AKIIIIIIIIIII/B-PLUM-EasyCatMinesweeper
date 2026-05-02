@@ -4,18 +4,25 @@ public class MapBottom {
 
     BottomCat bottomCat = new BottomCat();
     Num num = new Num();
-    {
-    bottomCat.NewCat();
-    num.NewNum();
-    }
+
     void regame(){
-        for (int i = 1; i <= GameUtil.MAP_W ; i++) {
-            for (int j = 1; j <= GameUtil.MAP_H ; j++) {
+        for (int i = 0; i < GameUtil.MAP_BOTTOM.length ; i++) {
+            for (int j = 0; j < GameUtil.MAP_BOTTOM[i].length ; j++) {
                 GameUtil.MAP_BOTTOM[i][j] = 0;
             }
         }
-        bottomCat.NewCat();
+        GameUtil.firstClick = true;
+    }
+
+    void createMap(int safeX, int safeY) {
+        for (int i = 0; i < GameUtil.MAP_BOTTOM.length ; i++) {
+            for (int j = 0; j < GameUtil.MAP_BOTTOM[i].length ; j++) {
+                GameUtil.MAP_BOTTOM[i][j] = 0;
+            }
+        }
+        bottomCat.NewCat(safeX, safeY);
         num.NewNum();
+        GameUtil.firstClick = false;
     }
     void paintSelf(Graphics g){
         g.setColor(Color.ORANGE);

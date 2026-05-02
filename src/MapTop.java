@@ -2,12 +2,14 @@ import java.awt.*;
 
 public class MapTop {
     static int temp_x,temp_y;
+    MapBottom mapBottom = new MapBottom();
     void regame(){
-        for (int i = 1; i <= GameUtil.MAP_W ; i++) {
-            for (int j = 1; j <= GameUtil.MAP_H ; j++) {
+        for (int i = 0; i < GameUtil.TOP_BOTTOM.length ; i++) {
+            for (int j = 0; j < GameUtil.TOP_BOTTOM[i].length ; j++) {
                 GameUtil.TOP_BOTTOM[i][j] = 0;
             }
         }
+        GameUtil.resetGameState();
     }
     void logic(){
         temp_x = 0;
@@ -19,9 +21,12 @@ public class MapTop {
         if (temp_x >= 1 && temp_x <= GameUtil.MAP_W && temp_y >= 1 && temp_y <= GameUtil.MAP_H) {
             if (GameUtil.LEFT) {
                 if (GameUtil.TOP_BOTTOM[temp_x][temp_y] == 0) {
+                    if (GameUtil.firstClick) {
+                        mapBottom.createMap(temp_x, temp_y);
+                    }
                     GameUtil.TOP_BOTTOM[temp_x][temp_y] = -1;
+                    OpenSpace(temp_x,temp_y);
                 }
-                OpenSpace(temp_x,temp_y);
                 GameUtil.LEFT = false;
             }else if (GameUtil.RIGHT) {
                 if (GameUtil.TOP_BOTTOM[temp_x][temp_y] == 0) {
@@ -56,7 +61,7 @@ public class MapTop {
         if (GameUtil.MAP_BOTTOM[x][y]>0) {//周围多雷
             for (int i = x-1; i <= x+1; i++) {
                 for (int j = y-1; j <=y+1 ; j++) {
-                    if (GameUtil.MAP_BOTTOM[x][y]==1) {
+                    if (GameUtil.TOP_BOTTOM[i][j] == 1) {
                         cnt++;
                     }
                 }

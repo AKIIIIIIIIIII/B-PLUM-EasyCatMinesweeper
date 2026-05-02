@@ -38,6 +38,17 @@ public class Minesweeper_Win extends JFrame {
                             GameUtil.MOUSE_Y=e.getY();
                             GameUtil.RIGHT=true;
                         }
+                        if (e.getButton() == 1) {
+                            if (e.getX()>=(GameUtil.OFFSET * 2 + GameUtil.SQUARE_LENGTH*(GameUtil.MAP_W-1))/2
+                                    && e.getX() <= (GameUtil.OFFSET * 2 + GameUtil.SQUARE_LENGTH*(GameUtil.MAP_W-1))/2 + GameUtil.SQUARE_LENGTH
+                                    && e.getY()>=GameUtil.OFFSET
+                                    && e.getY()<= GameUtil.OFFSET + GameUtil.SQUARE_LENGTH) {
+                                mapBottom.regame();
+                                mapTop.regame();
+                                GameUtil.status=0;
+                            }
+                        }
+                        break;
                     case 1:
                     case 2:
                         if(e.getButton() == 1){

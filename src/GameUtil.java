@@ -15,6 +15,7 @@ public class GameUtil {
     static boolean LEFT = false;
     static boolean RIGHT = false;
     static int status = 0;
+    static boolean firstClick = true;
     static Image maozhua = Toolkit.getDefaultToolkit().getImage("pic/maozhua.png");
     static Image coin = Toolkit.getDefaultToolkit().getImage("pic/coin.png");
     static Image mouse = Toolkit.getDefaultToolkit().getImage("pic/mouse.png");
@@ -31,4 +32,17 @@ public class GameUtil {
     static Image Continue = Toolkit.getDefaultToolkit().getImage("pic/cheese.png");
     static Image Success = Toolkit.getDefaultToolkit().getImage("pic/mouse.png");
     static Image False = Toolkit.getDefaultToolkit().getImage("pic/cat.png");
+
+    static void resetInputState() {
+        MOUSE_X = 0;
+        MOUSE_Y = 0;
+        LEFT = false;
+        RIGHT = false;
+    }
+
+    static void resetGameState() {
+        resetInputState();
+        firstClick = true;
+        status = 0;
+    }
 }
