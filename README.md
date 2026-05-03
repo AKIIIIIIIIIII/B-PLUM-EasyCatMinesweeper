@@ -2,6 +2,10 @@
 
 A small Java Swing minesweeper game with a cat-themed visual style.
 
+## Screenshot
+
+![Easy Cat Minesweeper](docs/screenshot.jpg)
+
 ## Features
 
 - Classic minesweeper-style gameplay
