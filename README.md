@@ -53,3 +53,9 @@ out/   IntelliJ build output
 This project is released under the [PolyForm Noncommercial License 1.0.0](https://polyformproject.org/licenses/noncommercial/1.0.0) and is intended for noncommercial use only.
 
 The license applies only to original code, writing, and design modifications that the author owns or is authorized to license. Third-party dependencies, fonts, images, icons, and other external materials are excluded and remain under their respective licenses.
+
+## Commercial use
+
+Commercial use, paid redistribution, brand campaigns, and client work require separate written permission. Contact the author through [https://b-plum.com/](https://b-plum.com/).
+
+商业使用、付费再分发、品牌活动或客户项目需要另行获得书面授权，请通过 [https://b-plum.com/](https://b-plum.com/) 联系作者。
