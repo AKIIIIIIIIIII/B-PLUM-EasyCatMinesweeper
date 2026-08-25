@@ -47,3 +47,9 @@ out/   IntelliJ build output
 - `BottomCat`: generates mines
 - `Num`: calculates nearby mine numbers
 - `GameUtil`: shared game state, constants, images, and UI settings
+
+## License
+
+This project is released under the [PolyForm Noncommercial License 1.0.0](https://polyformproject.org/licenses/noncommercial/1.0.0) and is intended for noncommercial use only.
+
+The license applies only to original code, writing, and design modifications that the author owns or is authorized to license. Third-party dependencies, fonts, images, icons, and other external materials are excluded and remain under their respective licenses.
